@@ -1,5 +1,4 @@
 ## To implement
-- merge sort
 - maximum subarray
 - matrix product brute force
 - strassen

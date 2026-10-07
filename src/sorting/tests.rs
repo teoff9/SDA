@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod tests {
-    use crate::sorting::sort_algos::{insertion_sort, selection_sort};
+    use crate::sorting::sort_algos::{insertion_sort, merge_sort, selection_sort};
     use crate::sorting::utils::find_min;
 
     #[test]
@@ -88,4 +88,13 @@ mod tests {
     test_sorting_algo!(selection_sort_tests, selection_sort);
 
     test_sorting_algo!(insertion_sort_tests, insertion_sort);
+
+    fn merge_sort_wrapper<T: Ord + Copy>(v: &mut [T]) {
+        if !v.is_empty() {
+            let last = v.len() - 1;
+            merge_sort(v, 0, last);
+        }
+    }
+
+    test_sorting_algo!(merge_sort_tests, merge_sort_wrapper);
 }

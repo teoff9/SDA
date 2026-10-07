@@ -1,4 +1,4 @@
-use crate::sorting::utils::find_min;
+use crate::sorting::utils::{find_min, merge};
 
 pub fn selection_sort<T>(v: &mut [T])
 where
@@ -25,5 +25,17 @@ where
                 break;
             }
         }
+    }
+}
+
+pub fn merge_sort<T>(v: &mut [T], i: usize, j: usize)
+where
+    T: Ord + Copy,
+{
+    if i < j {
+        let m = (i + j) / 2;
+        merge_sort(v, i, m);
+        merge_sort(v, m + 1, j);
+        merge(v, i, m, j);
     }
 }

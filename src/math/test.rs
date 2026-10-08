@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod tests {
-    use crate::math::matrix::Matrix;
+    use crate::math::matrix::{Matrix, brute_multiply};
 
     #[test]
     fn test_new_const() {
@@ -135,7 +135,6 @@ mod tests {
         };
     }
 
-    // use crate::matrix::multiply::{brute_multiply, strassen_multiply};
-    // test_multiplication_algo!(brute_multiplication_tests, brute_multiply);
+    test_multiplication_algo!(brute_multiplication_tests, brute_multiply);
     // test_multiplication_algo!(strassen_multiplication_tests, strassen_multiply);
 }

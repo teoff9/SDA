@@ -122,3 +122,30 @@ impl<T: Num + Clone + Copy> PartialEq for Matrix<T> {
         self.rows == other.rows && self.cols == other.cols && self.data == other.data
     }
 }
+
+impl<T: Num + Clone + Copy> Mul<Matrix<T>> for &Matrix<T> {
+    type Output = Matrix<T>;
+    fn mul(self, rhs: Matrix<T>) -> Self::Output {
+        strassen_multiply(self, &rhs)
+    }
+}
+
+pub fn brute_multiply<T: Num + Clone + Copy>(a: &Matrix<T>, b: &Matrix<T>) -> Matrix<T> {
+    assert!(a.cols() == a.rows());
+    let mut c = Matrix::new_const(a.rows(), b.cols(), T::zero());
+
+    for i in 0..a.rows() {
+        for j in 0..b.cols() {
+            c[i][j] = T::zero();
+            for k in 0..a.cols() {
+                c[i][j] = c[i][j] + a[i][k] * b[k][j];
+            }
+        }
+    }
+    c
+}
+
+pub fn strassen_multiply<T: Num + Clone + Copy>(a: &Matrix<T>, b: &Matrix<T>) -> Matrix<T> {
+    assert!(a.cols() == a.rows());
+    todo!()
+}

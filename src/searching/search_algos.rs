@@ -1,3 +1,5 @@
+use num::Num;
+
 pub fn search_key<T>(v: &[T], key: T) -> Option<usize>
 where
     T: PartialEq,
@@ -83,46 +85,30 @@ pub fn search_max_subarray<T: Num + PartialOrd + Copy>(
     }
 }
 
-use num::Num;
-
 pub fn search_max_crossing_subarray<T: Num + PartialOrd + Copy>(
     v: &[T],
     i: usize,
     m: usize,
     j: usize,
 ) -> (usize, usize, T) {
-    let mut left_max_sum = None;
-    let mut max_left_idx = m;
-    let mut current_sum = T::zero();
+    let mut max_sum: [Option<T>; 2] = [None; 2];
+    let mut max_idx = [m, m + 1];
+    let mut current_sum = [T::zero(); 2];
+    let mut ranges: [&mut dyn Iterator<Item = usize>; 2] = [&mut (i..=m).rev(), &mut (m + 1..=j)];
 
-    for k in (i..=m).rev() {
-        current_sum = current_sum + v[k];
-
-        if left_max_sum.is_none() || current_sum > left_max_sum.unwrap() {
-            left_max_sum = Some(current_sum);
-            max_left_idx = k;
+    for k in 0..=1 {
+        for i in &mut ranges[k] {
+            current_sum[k] = current_sum[k] + v[i];
+            if max_sum[k].is_none() || max_sum[k].unwrap() < current_sum[k] {
+                max_sum[k] = Some(current_sum[k]);
+                max_idx[k] = i;
+            }
         }
     }
-
-    let mut right_max_sum = None;
-    let mut max_right_idx = m + 1;
-    current_sum = T::zero();
-
-    for k in m + 1..=j {
-        current_sum = current_sum + v[k];
-
-        if right_max_sum.is_none() || current_sum > right_max_sum.unwrap() {
-            right_max_sum = Some(current_sum);
-            max_right_idx = k;
-        }
-    }
-
-    let final_left_sum = left_max_sum.unwrap_or(T::zero());
-    let final_right_sum = right_max_sum.unwrap_or(T::zero());
 
     (
-        max_left_idx,
-        max_right_idx,
-        final_left_sum + final_right_sum,
+        max_idx[0],
+        max_idx[1],
+        max_sum[0].unwrap() + max_sum[1].unwrap(),
     )
 }

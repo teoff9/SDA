@@ -1,5 +1,4 @@
 ## To implement
-- maximum subarray
 - matrix product brute force
 - strassen
 - fibonacci dinamico
